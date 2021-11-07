@@ -24,14 +24,14 @@ class Promise {
       if (this.status === PENDING) {
         this.status = FULFILLED;
         this.value = value;
-        this.onResolvedCallbacks.forEach(fn=>fn());
+        this.onResolvedCallbacks.forEach((fn) => fn());
       }
     }; // 每次new 都生成两个方法 reoslve,reject
     const reject = (reason) => {
       if (this.status === PENDING) {
         this.status = REJECTED;
         this.reason = reason;
-        this.onRejectedCallbacks.forEach(fn=>fn());
+        this.onRejectedCallbacks.forEach((fn) => fn());
       }
     };
     try {
