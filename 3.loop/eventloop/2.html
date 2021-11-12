@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        document.body.style.background = 'red';
+        console.log(1)
+
+        // promise 我们自己实现的定时器 基于webapi 会开一个独立的线程
+        // 原生的promise 不是基于定时器的是自己实现的  就是产生一个延迟队列 等待当前宏任务执行完毕后在执行
+        setTimeout(()=>{
+            console.log(2)
+            document.body.style.background = 'yellow';
+        })
+        console.log(3);
+
+
+
+        // 1  'red'
+        // 3
+
+        // 微任务队列 [（2，yellow）]
+        // 页面渲染在微任务之后
+
+        // 除了promise MutationObserver node中的nextTick 是微任务 其他都是宏任务
+
+        // 除了第一次的宏任务之外  其他的是都先执行微任务 在执行宏任务 （微任务比宏任务快）
+</script> 
+</body>
+</html>
