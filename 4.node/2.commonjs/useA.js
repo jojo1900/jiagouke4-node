@@ -41,16 +41,28 @@ Module.prototype.load = function(){ // 加载模块
     let extension = path.extname(this.id);
     Module._extensions[extension](this)
 }
+Module._cache = {}; // 全局的缓存区 用来缓存模块的
 function req(id) {
     // 将路径变成绝对路径 进行操作, 可能id 没有后缀 需要依次尝试追加后缀 .js  .json
     let filepath = Module._resolveFilename(id); // 根据相对路径获取一个绝对路径
+    if(Module._cache[filepath]){ // 如果缓存中有 直接使用上一次缓存的结果
+        return Module._cache[filepath].exports
+    }
     let module = new Module(filepath);
+    Module._cache[filepath] = module; // 将模块进行缓存
     module.load(); // 加载模块 
     return module.exports; // 最终返回的是module.exports 
 }
 
-const r = req('./a.js');
-console.log(r)
+let r = req('./a.js');
+r = req('./a.js');
+r = req('./a.js');
+let b = req('./a.json')
+console.log(r,b)
+
+
+ // 基本类型和引用类型的区别 如果导出的是一个具体的值， 这个值就算变化了 也不会被重新获取
+// 如果导出的是一个引用类型，如果改变了引用类型中的内容， 那么重新获取获取的就是这个更新后的内容
 
 
 // 1.可以在chrome 浏览器中直接调试node代码  node --inspect-brk 文件名
