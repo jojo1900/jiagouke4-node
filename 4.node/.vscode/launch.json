@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": [],
-            "program": "${workspaceFolder}\\useA.js"
+            "program": "${workspaceFolder}\\core.js"
         }
     ]
 }
