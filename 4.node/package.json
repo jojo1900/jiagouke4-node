@@ -2,13 +2,19 @@
   "name": "4.node",
   "version": "1.0.0",
   "description": "",
-  "main": "1.ejs.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "mime a.js"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^3.1.6"
-  }
+    "jquery": "^2.0.0",
+    "mime": "^3.0.0"
+  },
+  "peerDependencies": {
+    "bootstrap": "^3.0.0"
+  },
+  "optionalDependencies": {}
 }

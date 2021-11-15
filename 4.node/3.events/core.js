@@ -3,7 +3,7 @@
 
 // node都是基于回调的， 解耦可以采用发布订阅模式。 node很多代码都是基于发布订阅的  
 // 流 、http 。。。
-const EventEmitter = require('./events');
+const EventEmitter = require('events');
 // const {inherits} = require('util')
 
 // on 订阅  emit 发布  once 订阅一次  off 移除监听  removeAllListeners 删除所有监听
@@ -34,6 +34,8 @@ let pending = false
 //      }
 // });
 
+
+console.log('ok')
 girl.on('我失恋了', function () { // {'我失恋了':[fn1,fn2,fn3],结婚了:[fn]}
     console.log('哭')
 })
@@ -44,7 +46,7 @@ function shopping () {
     console.log('购物')
 }
 // girl.once('我失恋了',shopping )
-girl.off('我失恋了',shopping )
+// girl.off('我失恋了',shopping )
 // [fn1,fn2,fn3]
 // 只要你绑定了这个事件 我就让你自动触发
 
@@ -54,3 +56,4 @@ girl.emit('我失恋了')
 
 // 主要的发布订阅可就这几个方法
 // once off emit on('newListener')
+
