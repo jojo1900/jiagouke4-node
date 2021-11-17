@@ -1,0 +1,17 @@
+{
+  "name": "5.node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "1.global.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev node 2.process.js",
+    "build": "cross-env NODE_ENV=prod node 2.process.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^8.3.0",
+    "cross-env": "^7.0.3"
+  }
+}
