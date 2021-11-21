@@ -7,7 +7,7 @@ class Queue{
         this.ll.add(element)
     }
     poll(){
-        return this.ll链.remove(0)?.element; // 判断运算符
+        return this.ll.remove(0)?.element; // 链判断运算符
     }
 }
 module.exports = Queue
