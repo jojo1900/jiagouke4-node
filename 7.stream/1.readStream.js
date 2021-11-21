@@ -11,9 +11,9 @@ const rs = new ReadStream(path.resolve(__dirname,'a.txt'),{
     end:5 // 从0索引读取到5索引
 }); // 可读流默认一次读取64k
 
-rs.on('open',function(fd){ // 此方法是fs可读流中自己实现的
-    console.log(fd); // fs.open('xxx','r') => fd
-})
+// rs.on('open',function(fd){ // 此方法是fs可读流中自己实现的
+//     console.log(fd); // fs.open('xxx','r') => fd
+// })
 const arr = []; // 这里需要采用Buffer的concat， 因为字符串拼接可能会导致乱码
 rs.on('data',function(chunk){
     console.log('data',chunk)
@@ -23,9 +23,9 @@ rs.on('data',function(chunk){
 rs.on('end',function(){
     console.log(Buffer.concat(arr).toString())
 })
-rs.on('close',()=>{
-    console.log('close')
-})
+// rs.on('close',()=>{
+//     console.log('close')
+// })
 
 setInterval(()=>{
     rs.resume()

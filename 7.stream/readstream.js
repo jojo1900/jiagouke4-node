@@ -10,13 +10,10 @@ class ReadStream extends EventEmitter {
         this.end = options.end;
         this.emitClose = options.emitClose || true;
         this.encoding = options.encoding;
-
         // 是否需要触发data事件
         this.flowing = false; // 当用户监听了data事件后 就将flowing 变为true
-
         this.offset = this.start; // 偏移量
         this.open()
-
         // 是events模块中的固定写法 ，  内部会在动触发 newListener 方法
         this.on('newListener', (type) => {
             if (type === 'data') { // 用户监听了data事件
@@ -60,26 +57,26 @@ class ReadStream extends EventEmitter {
 
         // 如果用户没有传递end， 那么最后的一次可能读取的数据小于水位线
         // bytesRead ! == howMuchToRead
-        fs.read(this.fd,buffer,0,howMuchToRead,this.offset,(err,bytesRead)=>{
-            if(err) return this.destory(err);
-            if(bytesRead == 0){
+        fs.read(this.fd, buffer, 0, howMuchToRead, this.offset, (err, bytesRead) => {
+            if (err) return this.destory(err);
+            if (bytesRead == 0) {
                 this.emit('end'); // 如果读取不到内容 说明整个流程就完成了 触发end事件
                 return this.destory(); // 最终销毁即可
             }
             this.offset += bytesRead;
-            this.emit('data',buffer.slice(0,bytesRead));
-            if(this.flowing){
+            this.emit('data', buffer.slice(0, bytesRead));
+            if (this.flowing) {
                 this.read()
             }
         })
     }
-    pause(){
-        if(this.flowing){
+    pause() {
+        if (this.flowing) {
             this.flowing = false
         }
     }
-    resume(){
-        if(!this.flowing){
+    resume() {
+        if (!this.flowing) {
             this.flowing = true;
             this.read();
         }

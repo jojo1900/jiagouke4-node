@@ -11,7 +11,7 @@
             "skipFiles": [
               
             ],
-            "program": "${workspaceFolder}\\1.readStream.js"
+            "program": "${workspaceFolder}\\3.writeStream.js"
         }
     ]
 }
