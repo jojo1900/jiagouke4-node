@@ -11,7 +11,7 @@
             "skipFiles": [
               
             ],
-            "program": "${workspaceFolder}\\3.writeStream.js"
+            "program": "${workspaceFolder}\\LinkList.js"
         }
     ]
 }
