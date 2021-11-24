@@ -2,7 +2,7 @@ const fs = require('fs'); // 我们现在说的这个可读流是基于文件
 const path = require('path')
 const ReadStream = require('./readstream')
 // 父类叫Readable接口， 我们使用的文件可读流是继承于这个Readable的
-const rs = new ReadStream(path.resolve(__dirname,'a.txt'),{
+const rs = fs.createReadStream(path.resolve(__dirname,'a.txt'),{
     flags:'r', // fs.open(path,'r')
     highWaterMark: 4, // 每次读取的个数  64 * 1024 
     start:0,

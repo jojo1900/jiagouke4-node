@@ -8,10 +8,8 @@
             "type": "pwa-node",
             "request": "launch",
             "name": "Launch Program",
-            "skipFiles": [
-              
-            ],
-            "program": "${workspaceFolder}\\LinkList.js"
+            "skipFiles": [],
+            "program": "${workspaceFolder}\\5.stream.js"
         }
     ]
 }

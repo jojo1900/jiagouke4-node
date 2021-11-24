@@ -16,8 +16,7 @@ let i = 0; // 0-9
 function write(){
     let flag = true;
     while(flag && i<=9){
-        i++;
-            flag = ws.write('abc','utf8',()=>{
+            flag = ws.write(i++ + '','utf8',()=>{
                 console.log( '写入了')
             }); // 当写入的时候达到了预期的时候 此时flag 就会变为false
       

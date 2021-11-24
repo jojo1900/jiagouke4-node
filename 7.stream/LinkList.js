@@ -1,6 +1,4 @@
 // 队列 栈 链表 线性结构
-
-
 class Node {
     constructor(element, next) {
         this.element = element; // 存放当前节点的内容
@@ -32,27 +30,29 @@ class LinkedList {
         }
         this.size++;
     }
-    remove(index){
+    remove(index) {
         let node;
-        if(index == 0){
-            if(this.head){
+        if (index == 0) {
+            if (this.head) {
                 node = this.head;
                 this.head = this.head.next; // 将头部的内容指向下一个节点 ， 第一个就删掉了
+                this.size--;
             }
-        }else{
+        } else {
             let preveNode = this.getNode(index - 1);
             node = preveNode.next; // 要删除的节点
             preveNode.next = node.next;
+            this.size--;
+
         }
-        this.size--;
         return node;
         // 删除返回删除后的节点
     }
     reverse() {
-        function traversal(head) { 
+        function traversal(head) {
             // 一个节点没有， 或者就一个节点
-            if(head == null || head.next == null) return head; // 新的头部
-            let newHead =  traversal(head.next); // 不停的找新头
+            if (head == null || head.next == null) return head; // 新的头部
+            let newHead = traversal(head.next); // 不停的找新头
             // 针对最后一次 newHead 就是4  head 就是3
             head.next.next = head;
             head.next = null;
@@ -60,15 +60,15 @@ class LinkedList {
         }
         return traversal(this.head)
     }
-    reverse1(){
+    reverse1() {
         let head = this.head;
-        if(head == null || head.next == null) return head;    // 一个节点没有， 或者就一个节点
+        if (head == null || head.next == null) return head;    // 一个节点没有， 或者就一个节点
         let newHead = null;
-        while(head){ // 把链表的内容 整个搬运一遍，什么时候没有了就没了
-           let temp = head.next; // 先把除了对一个节点的节点保存一下
-           head.next = newHead; // 将第一个头 指向新接的节点
-           newHead = head; // 让新链表的头指向这个节点
-           head = temp; // 将原来的链表更新
+        while (head) { // 把链表的内容 整个搬运一遍，什么时候没有了就没了
+            let temp = head.next; // 先把除了对一个节点的节点保存一下
+            head.next = newHead; // 将第一个头 指向新接的节点
+            newHead = head; // 让新链表的头指向这个节点
+            head = temp; // 将原来的链表更新
         }
         return newHead
     }

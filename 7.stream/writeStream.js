@@ -1,5 +1,6 @@
 const EventEmitter = require('events');
 const fs = require('fs');
+const Queue = require('./Queue')
 class WriteStream extends EventEmitter {
     constructor(path, options) {
         super();
@@ -14,7 +15,7 @@ class WriteStream extends EventEmitter {
         this.len = 0; // 默认记录调用write写了多少个
         this.needDrain = false; // 是否触发drain事件
         this.writting = false; // 默认不是正在写入 
-        this.cache = []
+        this.cache = new Queue(); // []
         this.offset = this.start; // 偏移量
     }
     destory(err) {
@@ -54,12 +55,12 @@ class WriteStream extends EventEmitter {
             this._write(chunk,encoding,callback);
         }else{
             // 如果是正在写入 要写入到缓存区中
-            this.cache.push({chunk,encoding,callback});
+            this.cache.add({chunk,encoding,callback});
         }
         return ret
     }
     clearBuffer(){
-        let obj = this.cache.shift(); // 不停的取 总会有一天是undefind
+        let obj = this.cache.poll(); // 不停的取 总会有一天是undefind
         if(obj){
             let {chunk,encoding,callback} = obj;
             this._write(chunk,encoding,callback);
