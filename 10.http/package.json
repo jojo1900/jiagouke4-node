@@ -1,0 +1,15 @@
+{
+  "name": "zf-server",
+  "version": "1.0.0",
+  "description": "",
+  "bin": "./bin/www",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^8.3.0"
+  }
+}

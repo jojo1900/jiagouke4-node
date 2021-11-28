@@ -1,0 +1,20 @@
+#! /usr/bin/env node
+
+const config = require('./config');
+const {program} = require('commander');
+program.name('zf-server');
+let usages = []
+
+Object.values(config).forEach(option=>{
+    program.option(option.flags,option.description,option.default)
+    usages.push(option.usage)
+})
+program.on('--help',function(){
+    console.log('\r\nExamples:')
+    usages.forEach(usage => console.log('  ' + usage))
+});
+
+program.parse(process.argv)
+let userOptions = program.opts(); // 通过这个选项来启动一个服务
+
+// 通过userOptions 来创建一个http服务即可
