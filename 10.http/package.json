@@ -4,12 +4,15 @@
   "description": "",
   "bin": "./bin/www",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon ./bin/www"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commander": "^8.3.0"
+    "chalk": "^4.1.2",
+    "commander": "^8.3.0",
+    "ejs": "^3.1.6",
+    "mime": "^3.0.0"
   }
 }
