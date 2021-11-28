@@ -79,6 +79,6 @@ function rmdir5(dir) {
         }
     }
 }
-rmdir5('a')
+rmdir5('a');
 
 // http基础核心应用 （http中的header应用  缓存 压缩  http-server）

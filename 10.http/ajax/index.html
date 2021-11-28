@@ -12,7 +12,7 @@
     <script>
         let xhr = new XMLHttpRequest();
         xhr.open('put', 'http://localhost:3000/user', true);
-        xhr.responseType = 'json'
+        xhr.responseType = 'json' // JSON.parse() 浏览器做的
         document.cookie = 'name=zf'
         xhr.withCredentials = true; // 表示强制携带cookie
         xhr.setRequestHeader('authorization','Bearer token')
