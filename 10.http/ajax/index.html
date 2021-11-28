@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let xhr = new XMLHttpRequest();
+        xhr.open('put', 'http://localhost:3000/user', true);
+        xhr.responseType = 'json'
+        document.cookie = 'name=zf'
+        xhr.withCredentials = true; // 表示强制携带cookie
+        xhr.setRequestHeader('authorization','Bearer token')
+        xhr.onload = function () {
+            console.log(xhr.response);
+        }
+        xhr.send("{a:1}");
+    </script>
+</body>
+</html>

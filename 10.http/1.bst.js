@@ -1,4 +1,4 @@
-class Node {
+class Node {  
     constructor(element, parent) {
         this.element = element;
         this.parent = parent;
@@ -120,7 +120,7 @@ bst.postorderTranversal({
 // 数组的 pop push  栈
 // 数组 push 和 shift 队列
 
-// http-server 实现一个  缓存 + 压缩 + 多语言 cookie session 跨域...
+// http-server 实现一个  缓存 + 压缩 + 多语言 cookie session jwt 跨域...
 
 // 周三 周五  tcp网络  http1/2/3的区别/https  express框架 + 中间件的实现原理
 // 下周mongo + redis   koa中间件 原理 
