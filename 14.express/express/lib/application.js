@@ -14,6 +14,12 @@ Application.prototype.lazy_route = function(){
 // A (C) B  可以直接使用c  有一天a不用c 就挂了
 const methods = require('methods');
 
+Application.prototype.use = function(){
+    this.lazy_route(); // 懒加载路由
+    this.router.use(...arguments); // 交给路由系统来处处
+}
+
+
 methods.forEach((method)=>{
     Application.prototype[method] = function (pathname, ...handlers) { // 用户的get
         this.lazy_route();

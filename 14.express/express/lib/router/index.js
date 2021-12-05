@@ -5,7 +5,26 @@ const methods = require('methods')
 function Router() {
     this.stack = []
 }
-methods.forEach((method)=>{
+Router.prototype.use = function (path, handler) { // 有可能用户只传递了一个回调
+    // 如果handlers数组中有值 说明用户传递了handler 
+    if (typeof handler !== 'function') { // 没有传递第二个参数
+        handler = path; // app.use(fn)  => app.use('/',fn)
+        path = '/'
+    }
+    // 如果只传递了一个参数 ， Array.from(arguments).slice(1)就是空数组
+    let handlers = Array.from(arguments).slice(1); // 除了第一个的组成数组
+
+    if (handlers.length == 0) {
+        handlers = [handler]; // 防止 / app.use(fn)
+    }
+
+    handlers.forEach(handler => {
+        let layer = new Layer(path, handler); // 中间件中的layer 没有route属性
+        layer.route = undefined; // 没有route
+        this.stack.push(layer);
+    });
+}
+methods.forEach((method) => {
     Router.prototype[method] = function (pathname, handlers) {
         const route = new Route();
         const layer = new Layer(pathname, route.dispatch.bind(route));// 创建一个layer
@@ -25,14 +44,43 @@ Router.prototype.handle = function (req, res, out) {
     let method = req.method.toLowerCase();
     // 请求到来后 迭代外层的栈 
     let idx = 0;
-    const next = () => { // 先执行第一个 ，将第二个执行逻辑传入到dispatch中，dispatch调用此回调就从第一个走到第二个
+    const next = (err) => { // 先执行第一个 ，将第二个执行逻辑传入到dispatch中，dispatch调用此回调就从第一个走到第二个
         if (idx >= this.stack.length) return out()
         let layer = this.stack[idx++];
-        if (layer.match(pathname) && layer.route.match_method(req.method.toLowerCase())) { // 如果路径一样说明就匹配到了
-            layer.handle_request(req, res, next); // 调用dispatch方法
+
+
+        if (err) {
+            if(!layer.route){
+                layer.handle_error(err,req,res,next); // 内部会看一下是不是错误处理中间
+            }else{
+                next(err); // 如果不是中间件 就继续找下面的 
+            }
         } else {
-            next(); // 如果路径不匹配则跳过执行
+            // 路由和中间件的区别在于 中间件 不需要匹配方法，只要路径匹配即可
+
+            // 无论路由还是中间件路径要先匹配成功, 如果是路由还要匹配方法
+            if (layer.match(pathname)) {
+                // 中间件参数不是4个的话 会走正常中间件
+                if (!layer.route) { // 中间件
+                    if(layer.handler.length !== 4){
+                        layer.handle_request(req, res, next); // 调用中间件绑定的函数
+                    }else{
+                        next();
+                    }
+                } else {
+                    if (layer.route.match_method(req.method.toLowerCase())) {
+                        layer.handle_request(req, res, next); // 调用dispatch方法
+                    } else {
+                        next();
+                    }
+                }
+            } else {
+                next();
+
+            }
         }
+
+
     }
     next();
 

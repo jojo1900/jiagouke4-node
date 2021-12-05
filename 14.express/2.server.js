@@ -17,7 +17,7 @@ app.post('/',function(req,res,next){ // 路由的中间件函数 在访问到真
     console.log(1111);
     next();
 })
-app.get('/',function(req,res){
+app.get('/xxx',function(req,res){
     console.log(2)
     res.end('end')
 })
