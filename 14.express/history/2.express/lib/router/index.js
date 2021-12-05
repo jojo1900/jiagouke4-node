@@ -1,41 +1,38 @@
 const url = require('url');
 const Layer = require('./layer')
 const Route = require('./route')
-const methods = require('methods')
 function Router() {
     this.stack = []
 }
-methods.forEach((method)=>{
-    Router.prototype[method] = function (pathname, handlers) {
-        const route = new Route();
-        const layer = new Layer(pathname, route.dispatch.bind(route));// 创建一个layer
-        layer.route = route; // 标识每一个路由都配备了一个route实例
-        this.stack.push(layer);
-        route[method](handlers); // 让route去存放用户真实的回调
-        // this.stack.push({
-        //     method: 'get',
-        //     pathname,
-        //     handler
-        // });
-    }
-})
+Router.prototype.get = function (pathname, handlers) {
+    const route = new Route();
+    const layer = new Layer(pathname, route.dispatch.bind(route));// 创建一个layer
+    layer.route = route; // 标识每一个路由都配备了一个route实例
+    this.stack.push(layer);
+    route.get(handlers); // 让route去存放用户真实的回调
 
+    // this.stack.push({
+    //     method: 'get',
+    //     pathname,
+    //     handler
+    // });
+}
 Router.prototype.handle = function (req, res, out) {
     let { pathname } = url.parse(req.url);
     let method = req.method.toLowerCase();
     // 请求到来后 迭代外层的栈 
     let idx = 0;
-    const next = () => { // 先执行第一个 ，将第二个执行逻辑传入到dispatch中，dispatch调用此回调就从第一个走到第二个
-        if (idx >= this.stack.length) return out()
+    const next = ()=>{ // 先执行第一个 ，将第二个执行逻辑传入到dispatch中，dispatch调用此回调就从第一个走到第二个
+        if(idx >= this.stack.length) return out()
         let layer = this.stack[idx++];
-        if (layer.match(pathname) && layer.route.match_method(req.method.toLowerCase())) { // 如果路径一样说明就匹配到了
-            layer.handle_request(req, res, next); // 调用dispatch方法
-        } else {
+        if(layer.path === pathname){ // 如果路径一样说明就匹配到了
+            layer.handler(req,res,next); // 调用dispatch方法
+        }else{
             next(); // 如果路径不匹配则跳过执行
         }
     }
     next();
-
+    
 }
 module.exports = Router;
 
