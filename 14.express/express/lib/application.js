@@ -6,6 +6,28 @@ function Application() { // 一创建应用 就给了个路由系统
 Application.prototype.lazy_route = function(){
     if(!this.router){
         this.router = new Router(); // 将路由的创建做了一个懒加载
+
+        this.use((req, res, next) => {
+            res.send = function (data) {
+                if (typeof data == 'object') {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(data))
+                }else if(Buffer.isBuffer(data) || typeof data === 'string'){
+                    res.end(data);
+                }else if(typeof data === 'number') {
+                    res.statusCode = data; // 状态码
+                    res.end(statuses[data]); // send只能调用一次
+                }
+            }
+            res.sendFile = function(fielpath){
+                // mime设置返回的类型
+                res.setHeader('Content-Type',require('mime').getType(fielpath) + ';charset=utf-8')
+                require('fs').createReadStream(fielpath).pipe(res); // res.end()
+            }
+            next(); // 扩展好后 ，后续的路由或者中间件 都可以使用扩展后的方法
+        })
+
+
     }
 }
 
