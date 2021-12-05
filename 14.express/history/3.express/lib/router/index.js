@@ -2,21 +2,10 @@ const url = require('url');
 const Layer = require('./layer')
 const Route = require('./route')
 const methods = require('methods')
-
-
 function Router() {
-    let router = (req,res,next)=>{ // 请求来了 怎么去找呢？
-
-        // 可以充当中间件使用
-        router.handle(req,res,next); // 内部会去栈中依次查找
-    }
-    router.stack = []; // 可以实现既能new 又能调用  (为什么express用能构造函数)
-    router.__proto__ = proto; // 让一个类能new也能执行，为了保证原型链正常能使用就让她继承代码
-    return router
-
+    this.stack = []
 }
-let proto = {}
-proto.use = function (path, handler) { // 有可能用户只传递了一个回调
+Router.prototype.use = function (path, handler) { // 有可能用户只传递了一个回调
     // 如果handlers数组中有值 说明用户传递了handler 
     if (typeof handler !== 'function') { // 没有传递第二个参数
         handler = path; // app.use(fn)  => app.use('/',fn)
@@ -36,14 +25,7 @@ proto.use = function (path, handler) { // 有可能用户只传递了一个回�
     });
 }
 methods.forEach((method) => {
-    // 用户以前调用的是 application中的get方法 app.get , 现在router.get
-    proto[method] = function (pathname, handlers) {
-
-        if(!Array.isArray(handlers)){
-            // handles = [handles] 
-            handlers = Array.from(arguments).slice(1); // 如果直接调用可能handlers就是一个函数，我需要将它转化成数组
-        }
-
+    Router.prototype[method] = function (pathname, handlers) {
         const route = new Route();
         const layer = new Layer(pathname, route.dispatch.bind(route));// 创建一个layer
         layer.route = route; // 标识每一个路由都配备了一个route实例
@@ -57,19 +39,15 @@ methods.forEach((method) => {
     }
 })
 
-proto.handle = function (req, res, out) {
+Router.prototype.handle = function (req, res, out) {
     let { pathname } = url.parse(req.url);
     let method = req.method.toLowerCase();
     // 请求到来后 迭代外层的栈 
     let idx = 0;
-    let removed  = '';
     const next = (err) => { // 先执行第一个 ，将第二个执行逻辑传入到dispatch中，dispatch调用此回调就从第一个走到第二个
         if (idx >= this.stack.length) return out()
         let layer = this.stack[idx++];
-        if(removed.length > 0){
-            req.url = removed + req.url;
-            removed = '';
-        }
+
 
         if (err) {
             if(!layer.route){
@@ -85,21 +63,12 @@ proto.handle = function (req, res, out) {
                 // 中间件参数不是4个的话 会走正常中间件
                 if (!layer.route) { // 中间件
                     if(layer.handler.length !== 4){
-
-
-                        // 进入到中间件后我们将中间件路径删除掉
-                        removed = layer.path !== '/' ? layer.path :''; // 要删除的部分
-                        req.url = req.url.slice(removed.length); // 进入中间件的时候删除路径
-
-
                         layer.handle_request(req, res, next); // 调用中间件绑定的函数
                     }else{
                         next();
                     }
                 } else {
                     if (layer.route.match_method(req.method.toLowerCase())) {
-
-                        req.params = layer.params || {};
                         layer.handle_request(req, res, next); // 调用dispatch方法
                     } else {
                         next();

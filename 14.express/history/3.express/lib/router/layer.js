@@ -1,13 +1,6 @@
-const pathToRegExp = require('path-to-regexp')
 function Layer(path, handler) {
     this.path = path;
     this.handler = handler;
-
-    // 所有的layer中都会存放路径 ， 我就将这个路径转成正则
-    this.keys=[]
-
-    this.regExp = pathToRegExp(this.path,this.keys,true);
-
 }
 Layer.prototype.match = function (pathname) {
 
@@ -18,21 +11,6 @@ Layer.prototype.match = function (pathname) {
     if (this.path === pathname) {
         return true; // 写的路径和访问的路径一致都是可以访问的
     }
-
-    let matches = pathname.match(this.regExp); // 用请求的路径和正则进行匹配
-
-    if(matches){
-        let params = this.keys.reduce((memo,key,index)=>(
-            memo[key.name] = matches[index+1],memo
-        ),{});
-
-        this.params = params;
-        
-        
-        return true;
-    }
-
-
     if (!this.route) { // 中间件
         if (this.path == '/') {
             return true
