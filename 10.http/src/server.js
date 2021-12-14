@@ -98,6 +98,9 @@ class Server {
         res.setHeader('Expires', new Date(Date.now() + 10 * 1000).toGMTString()); // 绝对时间
         // 新版本 全部采用cache-control 默认会以cache-control为基准
         res.setHeader('Cache-Control', 'max-age=10'); // 10s内不要来找我  相对时间
+        // res.setHeader('Cache-Control','no-cache') 不缓存，但是缓存中有的话，每次询问服务器
+        // res.setHeader('Cache-Control','no-stroe') 真正的不缓存，压根就没有缓寸
+
 
         // 自己引用的文件，可以设置强制缓存  304
         // 如果直接访问的资源Cache-Control: max-age=0 默认访问的资源不走强制缓存
