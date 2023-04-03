@@ -1,0 +1,50 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div>title</div>
+      <audio src="./audio.mp3" controls></audio>
+      <audio controls id="ad1"></audio>
+      <audio controls id="ad2"></audio>
+    </div>
+    <script>
+      const audio = document.querySelector('audio');
+
+      const stream = audio.captureStream();
+      const recorder = new MediaRecorder(stream);
+      let chunks = [];
+
+      audio.addEventListener('play', () => {
+        console.log('start play');
+        recorder.start();
+
+        setTimeout(() => {
+          recorder.requestData();
+        }, 1000);
+
+        setTimeout(() => {
+          recorder.requestData();
+        }, 3000);
+      });
+
+      recorder.addEventListener('dataavailable', (e) => {
+        chunks.push(e.data);
+        const url = URL.createObjectURL(
+          new Blob(chunks, { type: 'audio/webm' })
+        );
+        const ad1 = document.querySelector('#ad1');
+        const ad2 = document.querySelector('#ad2');
+        if (!ad1.src) {
+          ad1.src = url;
+        } else {
+          ad2.src = url;
+        }
+      });
+    </script>
+  </body>
+</html>
