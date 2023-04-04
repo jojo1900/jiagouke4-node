@@ -1,0 +1,16 @@
+#! /usr/bin/env node
+
+const { program } = require('commander');
+const pkg = require('../package.json');
+const createServe = require('../src/server.js');
+
+program.name('yd-server').version(pkg.version);
+const config = require('./config');
+
+Object.entries(config).forEach(([key, conf]) => {
+  const { option, description, default: def, usage } = conf;
+  program.option(option, description, def);
+});
+
+program.parse(process.argv);
+createServe(program.opts());
