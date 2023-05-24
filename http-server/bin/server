@@ -2,7 +2,7 @@
 
 const { program } = require('commander');
 const pkg = require('../package.json');
-const createServe = require('../src/server.js');
+const createServer = require('../src/server.js');
 
 program.name('yd-server').version(pkg.version);
 const config = require('./config');
@@ -13,4 +13,4 @@ Object.entries(config).forEach(([key, conf]) => {
 });
 
 program.parse(process.argv);
-createServe(program.opts());
+createServer(program.opts());

@@ -6,5 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <ul>
+        <%for(let i = 0;i<files.length;i++){%>
+            <li><a href="<%=files[i].url%>"><%=files[i].name%></a></li>
+        <%}%>
+    </ul>
+
+  </body>
 </html>

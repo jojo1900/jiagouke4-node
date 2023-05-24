@@ -1,9 +1,5 @@
-const ExcelJS = require('exceljs');
-const workbook = new ExcelJS.Workbook();
-const sheet = workbook.addWorksheet('s1');
-const worksheet = workbook.getWorksheet(sheet.name);
-worksheet.columns = [
-  { header: 'Id', key: 'id', width: 10 },
-  { header: 'Name', key: 'name', width: 32 },
-  { header: 'D.O.B.', key: 'DOB', width: 10, outlineLevel: 1 },
-];
+// 2:30-4:30 听歌写代码。
+// 4:30--5:00 左右去小北。
+// 路上听歌，专注。
+// 在小北看书，聊天，休息一下。
+// 晚上回来理发，oculus运动。需要充电和电池。没准备好的话就健身环。
